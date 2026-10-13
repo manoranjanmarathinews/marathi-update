@@ -1,0 +1,87 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Subscribe for Updates</title>
+
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #f5f6fa;
+      font-family: Arial, sans-serif;
+      color: #202334;
+    }
+
+    .card {
+      width: min(340px, calc(100% - 48px));
+      padding: 30px 24px;
+      background: white;
+      border-radius: 18px;
+      text-align: center;
+      box-shadow: 0 8px 30px #00000012;
+    }
+
+    .bell { font-size: 46px; }
+
+    button {
+      width: 100%;
+      padding: 15px;
+      border: 0;
+      border-radius: 9px;
+      background: #1877f2;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #status { font-size: 14px; line-height: 1.5; }
+  </style>
+
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js"
+          defer></script>
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+
+    OneSignalDeferred.push(async function (OneSignal) {
+      await OneSignal.init({
+        appId: "e2bb5e20-8973-48da-8938-9ab0dc59e872"
+      });
+    });
+  </script>
+</head>
+
+<body>
+  <main class="card">
+    <div class="bell">🔔</div>
+    <h1>Get Instant Updates</h1>
+    <p>Subscribe to receive important news and updates directly in your browser.</p>
+
+    <button id="subscribe">Subscribe to Notifications</button>
+    <p id="status" role="status"></p>
+  </main>
+
+  <script>
+    document.getElementById("subscribe").addEventListener("click", function () {
+      const status = document.getElementById("status");
+
+      window.OneSignalDeferred.push(async function (OneSignal) {
+        try {
+          await OneSignal.Slidedown.promptPush();
+          status.textContent =
+            "Complete the browser prompt to subscribe.";
+        } catch (error) {
+          console.error(error);
+          status.textContent =
+            "Unable to open the subscription prompt. Please try again.";
+        }
+      });
+    });
+  </script>
+</body>
+</html>
